@@ -1,5 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/fca0e8017190ee29d60d/maintainability)](https://codeclimate.com/github/kirillbogdanov/backend-project-lvl2/maintainability)
-![](https://github.com/kirillbogdanov/backend-project-lvl2/workflows/ci/badge.svg)
+![CI](https://github.com/kirillbogdanov/backend-project-lvl2/workflows/CI/badge.svg)
 # backend-project-lvl2
 
 ## Requirements
