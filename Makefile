@@ -5,6 +5,13 @@ install:
 lint:
 	npx eslint .
 
+test:
+	npx jest
+
+.PHONY: coverage
+coverage:
+	npx jest --coverage
+
 publish:
 	npm publish --dry-run
 
