@@ -1,10 +1,11 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import _ from 'lodash';
+import parse from './parsers.js';
 
 const genDiff = (filePath1, filePath2) => {
-  const object1 = JSON.parse(readFileSync(path.resolve(filePath1)).toString());
-  const object2 = JSON.parse(readFileSync(path.resolve(filePath2)).toString());
+  const object1 = parse(readFileSync(path.resolve(filePath1)).toString(), path.extname(filePath1));
+  const object2 = parse(readFileSync(path.resolve(filePath2)).toString(), path.extname(filePath2));
   const object1Keys = Object.keys(object1);
   const object2Keys = Object.keys(object2);
   const deletedKeys = _.difference(object1Keys, object2Keys);

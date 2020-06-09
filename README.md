@@ -35,29 +35,6 @@ console.log(diff);
 
 ## `gendiff <filePath1> <filePath2>`
 
-Compares two configuration files and shows a difference. Works only with **plain** JSON files.
+Compares two configuration files and shows a difference. Works only with **plain** JSON and yml/yaml files.
 
-```shell
-$ cat before.json
-{
-  "host": "hexlet.io",
-  "timeout": 50,
-  "proxy": "123.234.53.22",
-  "follow": false
-}
-$ cat after.json
-{
-  "timeout": 20,
-  "verbose": true,
-  "host": "hexlet.io"
-}
-$ gendif before.json after.json
-{
-    host: hexlet.io
-  + timeout: 20
-  - timeout: 50
-  - proxy: 123.234.53.22
-  - follow: false
-  + verbose: true
-}
-```
+[![asciicast](https://asciinema.org/a/hGItgxGnH3KBOVr0KHjaPPVMc.svg)](https://asciinema.org/a/hGItgxGnH3KBOVr0KHjaPPVMc)
