@@ -35,6 +35,10 @@ console.log(diff);
 
 ## `gendiff <filePath1> <filePath2>`
 
-Compares two configuration files and shows a difference. Works only with **plain** JSON and yml/yaml files.
-
-[![asciicast](https://asciinema.org/a/hGItgxGnH3KBOVr0KHjaPPVMc.svg)](https://asciinema.org/a/hGItgxGnH3KBOVr0KHjaPPVMc)
+Compares two configuration files and shows a difference. Works only with **plain** `.json`, `.yml`/`.yaml` and `.ini` files.
+### `.json`
+[![asciicast](https://asciinema.org/a/tuD4GRZhpcNWwYCi0SyaSQ8Iv.svg)](https://asciinema.org/a/tuD4GRZhpcNWwYCi0SyaSQ8Iv)
+### `.yml/.yaml`
+[![asciicast](https://asciinema.org/a/adYYWtFHyPK1bFS9wplEro1DR.svg)](https://asciinema.org/a/adYYWtFHyPK1bFS9wplEro1DR)
+### `.ini`
+[![asciicast](https://asciinema.org/a/bTTLshrbMFfyMZeUmos6Rp8LE.svg)](https://asciinema.org/a/bTTLshrbMFfyMZeUmos6Rp8LE)
