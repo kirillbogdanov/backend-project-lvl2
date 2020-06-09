@@ -16,6 +16,13 @@ test('2 flat yml files', () => {
   expect(result).toEqual(expected);
 });
 
+test('2 flat ini files', () => {
+  const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/result.txt`).toString(), '\n');
+  const result = genDiff(`${__dirname}/../__fixtures__/before.ini`, `${__dirname}/../__fixtures__/after.ini`);
+
+  expect(result).toEqual(expected);
+});
+
 test('flat json and flat yml', () => {
   const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/result.txt`).toString(), '\n');
   const result = genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.yml`);
