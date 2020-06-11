@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import _ from 'lodash';
-import genDiff from './index.js';
+import genDiff from '../src/index.js';
 
 test('2 flat json files', () => {
   const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/result.txt`).toString(), '\n');

@@ -6,11 +6,12 @@ const program = new commander.Command();
 
 program
   .arguments('<filePath1> <filePath2>')
-  .option('-f, --format [type]', 'output format')
-  .description('Compares two configuration files and shows a difference.')
+  .option('-f, --format [type]', 'output format', 'stylish')
+  .description(`Compares two configuration files and shows a difference.
+Works only with .json, .yml/.yaml and .ini files.`)
   .version('0.0.1')
   .action((filePath1, filePath2) => {
-    console.log(genDiff(filePath1, filePath2));
+    console.log(genDiff(filePath1, filePath2, program.format));
   });
 
 program.parse(process.argv);

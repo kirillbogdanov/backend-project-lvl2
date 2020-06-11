@@ -31,14 +31,24 @@ console.log(diff);
 ```
 
 # Commands
-* [`gendiff <filePath1> <filePath2>`](#gendiff-filepath1-filepath2)
+* [`gendiff [options] <filePath1> <filePath2>`](#gendiff-options-filepath1-filepath2)
 
-## `gendiff <filePath1> <filePath2>`
+## `gendiff [options] <filePath1> <filePath2>`
 
-Compares two configuration files and shows a difference. Works only with **plain** `.json`, `.yml`/`.yaml` and `.ini` files.
+```
+Usage: gendiff [options] <filePath1> <filePath2>
+
+Compares two configuration files and shows a difference.
+Works only with .json, .yml/.yaml and .ini files.
+
+Options:
+  -f, --format [type]  output format (default: "stylish")
+  -V, --version        output the version number
+  -h, --help           display help for command
+```
 ### `.json`
-[![asciicast](https://asciinema.org/a/tuD4GRZhpcNWwYCi0SyaSQ8Iv.svg)](https://asciinema.org/a/tuD4GRZhpcNWwYCi0SyaSQ8Iv)
+[![asciicast](https://asciinema.org/a/j1BREE7Qu4Ka06SqSRAcrIERd.svg)](https://asciinema.org/a/j1BREE7Qu4Ka06SqSRAcrIERd)
 ### `.yml/.yaml`
-[![asciicast](https://asciinema.org/a/adYYWtFHyPK1bFS9wplEro1DR.svg)](https://asciinema.org/a/adYYWtFHyPK1bFS9wplEro1DR)
+[![asciicast](https://asciinema.org/a/r2uGUfSBti2E9MR43piXgsFoO.svg)](https://asciinema.org/a/r2uGUfSBti2E9MR43piXgsFoO)
 ### `.ini`
-[![asciicast](https://asciinema.org/a/bTTLshrbMFfyMZeUmos6Rp8LE.svg)](https://asciinema.org/a/bTTLshrbMFfyMZeUmos6Rp8LE)
+[![asciicast](https://asciinema.org/a/IljItwbsweHIQYGtj8Hg2lkIB.svg)](https://asciinema.org/a/IljItwbsweHIQYGtj8Hg2lkIB)
