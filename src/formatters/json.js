@@ -9,23 +9,12 @@ const json = (diff, parentPath = '') => {
       case undefined:
         return [...acc, ...JSON.parse(json(diff[propName], propPath))];
       case 'deleted':
-        return [...acc, {
-          propPath,
-          status,
-          oldValue,
-        }];
+        return [...acc, { propPath, status, oldValue }];
       case 'added':
-        return [...acc, {
-          propPath,
-          status,
-          value,
-        }];
+        return [...acc, { propPath, status, value }];
       case 'changed':
         return [...acc, {
-          propPath,
-          status,
-          oldValue,
-          value,
+          propPath, status, oldValue, value,
         }];
       default:
         return acc;
