@@ -1,4 +1,4 @@
-import { isObject } from './utils.js';
+import { isObject } from '../utils.js';
 
 const INDENT = '    ';
 
@@ -16,7 +16,7 @@ const getValueString = (value, indentation) => {
   return value.toString();
 };
 
-const getStylishString = (diff, levelOfNesting = 0) => {
+const stylish = (diff, levelOfNesting = 0) => {
   const INDENTATION_STRING = INDENT.repeat(levelOfNesting);
   const props = Object.keys(diff).sort();
 
@@ -25,7 +25,7 @@ const getStylishString = (diff, levelOfNesting = 0) => {
 
     switch (status) {
       case undefined:
-        return `${acc}${INDENTATION_STRING}    ${propName}: ${getStylishString(diff[propName], levelOfNesting + 1)}\n`;
+        return `${acc}${INDENTATION_STRING}    ${propName}: ${stylish(diff[propName], levelOfNesting + 1)}\n`;
       case 'deleted':
         return `${acc}${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}\n`;
       case 'added':
@@ -40,4 +40,4 @@ const getStylishString = (diff, levelOfNesting = 0) => {
   return `{\n${diffString}${INDENTATION_STRING}}`;
 };
 
-export default getStylishString;
+export default stylish;
