@@ -1,0 +1,65 @@
+[
+    {
+        "propPath": "common.setting2",
+        "status": "deleted",
+        "oldValue": 200
+    },
+    {
+        "propPath": "common.setting3",
+        "status": "changed",
+        "oldValue": true,
+        "value": {
+            "key": "value"
+        }
+    },
+    {
+        "propPath": "common.setting6.ops",
+        "status": "added",
+        "value": "vops"
+    },
+    {
+        "propPath": "common.follow",
+        "status": "added",
+        "value": false
+    },
+    {
+        "propPath": "common.setting4",
+        "status": "added",
+        "value": "blah blah"
+    },
+    {
+        "propPath": "common.setting5",
+        "status": "added",
+        "value": {
+            "key5": "value5"
+        }
+    },
+    {
+        "propPath": "group1.baz",
+        "status": "changed",
+        "oldValue": "bas",
+        "value": "bars"
+    },
+    {
+        "propPath": "group1.nest",
+        "status": "changed",
+        "oldValue": {
+            "key": "value"
+        },
+        "value": "str"
+    },
+    {
+        "propPath": "group2",
+        "status": "deleted",
+        "oldValue": {
+            "abc": 12345
+        }
+    },
+    {
+        "propPath": "group3",
+        "status": "added",
+        "value": {
+            "fee": 100500
+        }
+    }
+]

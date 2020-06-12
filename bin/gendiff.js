@@ -6,7 +6,7 @@ const program = new commander.Command();
 
 program
   .arguments('<filePath1> <filePath2>')
-  .option('-f, --format [type]', 'output format. \'plain\' || \'stylish\' ', 'stylish')
+  .option('-f, --format [type]', 'output format. "plain" || "stylish" || "json" ', 'stylish')
   .description(`Compares two configuration files and shows a difference.
 Works only with .json, .yml/.yaml and .ini files.`)
   .version('0.0.1')

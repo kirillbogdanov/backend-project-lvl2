@@ -42,13 +42,13 @@ Compares two configuration files and shows a difference.
 Works only with .json, .yml/.yaml and .ini files.
 
 Options:
-  -f, --format [type]  output format. 'plain' || 'stylish'  (default: "stylish")
+  -f, --format [type]  output format. "plain" || "stylish" || "json"  (default: "stylish")
   -V, --version        output the version number
   -h, --help           display help for command
 ```
 ### `.json`
-[![asciicast](https://asciinema.org/a/mdENRO5bRwkfljeNTZpbJ0p8z.svg)](https://asciinema.org/a/mdENRO5bRwkfljeNTZpbJ0p8z)
+[![asciicast](https://asciinema.org/a/HP2kkd1ox1XVimCKiwy4DhXWq.svg)](https://asciinema.org/a/HP2kkd1ox1XVimCKiwy4DhXWq)
 ### `.yml/.yaml`
-[![asciicast](https://asciinema.org/a/lLmZWMd0qNUyUjnvDpr1ee7wA.svg)](https://asciinema.org/a/lLmZWMd0qNUyUjnvDpr1ee7wA)
+[![asciicast](https://asciinema.org/a/EH59oggh5yM62LMgzYu0smO3X.svg)](https://asciinema.org/a/EH59oggh5yM62LMgzYu0smO3X)
 ### `.ini`
-[![asciicast](https://asciinema.org/a/182J0UAZN4jf2cfq86PifhjQz.svg)](https://asciinema.org/a/182J0UAZN4jf2cfq86PifhjQz)
+[![asciicast](https://asciinema.org/a/MyPmAHd6UgOAP8CYei14XMKSh.svg)](https://asciinema.org/a/MyPmAHd6UgOAP8CYei14XMKSh)

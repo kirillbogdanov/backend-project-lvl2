@@ -12,6 +12,10 @@ test:
 coverage:
 	npx jest --coverage
 
+check:
+	make lint
+	make test
+
 publish:
 	npm publish --dry-run
 
