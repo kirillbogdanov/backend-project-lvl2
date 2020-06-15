@@ -14,21 +14,22 @@ const getValueString = (value) => {
 };
 
 const plain = (diff, parentPath = '') => {
-  const props = Object.keys(diff);
-
-  const diffString = props.reduce((acc, propName) => {
+  const diffString = diff.reduce((acc, propData) => {
+    const {
+      propName, status, value, oldValue, children,
+    } = propData;
     const propPath = parentPath ? `${parentPath}.${propName}` : `${propName}`;
-    const { status, value, oldValue } = diff[propName];
 
     switch (status) {
-      case undefined:
-        return `${acc}\n${plain(diff[propName], propPath)}`;
+      case 'nested_changes':
+        return `${acc}\n${plain(children, propPath)}`;
       case 'deleted':
         return `${acc}\nProperty '${propPath}' was deleted`;
       case 'added':
         return `${acc}\nProperty '${propPath}' was added with value: ${getValueString(value)}`;
       case 'changed':
         return `${acc}\nProperty '${propPath}' was changed from ${getValueString(oldValue)} to ${getValueString(value)}`;
+      case 'not_modified':
       default:
         return acc;
     }

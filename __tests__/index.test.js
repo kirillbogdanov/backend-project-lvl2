@@ -1,57 +1,42 @@
 import { readFileSync } from 'fs';
+import path from 'path';
 import _ from 'lodash';
 import genDiff from '../src/index.js';
 
-test('2 json files with stylish format', () => {
-  const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/stylishResult.txt`).toString(), '\n');
-  const result = genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.json`, 'stylish');
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const readFixtureFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
-  expect(result).toBe(expected);
+describe.each([
+  ['stylish', 'stylishResult.txt'], ['plain', 'plainResult.txt'], ['json', 'jsonResult.json'],
+])('%s format', (format, resultFileName) => {
+  test.each(['json', 'yml', 'ini'])('%s', (fileFormat) => {
+    const diff = genDiff(getFixturePath(`before.${fileFormat}`), getFixturePath(`after.${fileFormat}`), format);
+    /*
+    Костыль с подменой имени файла фикстуры ниже пришлось сделать из-за того,
+    что при парсинге ini нельзя отличить значение-число от значения-строки.
+    Поэтому в jsonResultForIni.json лежит тот же результат, что и в jsonResult.json,
+    но с преобразованными к строке числовыми значениями.
+    */
+    const isFormatJson = format === 'json';
+    const resultFixtureFileName = isFormatJson && fileFormat === 'ini' ? 'jsonResultForIni.json' : resultFileName;
+    const fixture = readFixtureFile(resultFixtureFileName);
+    const result = isFormatJson ? JSON.parse(diff) : diff;
+    const expected = isFormatJson ? JSON.parse(fixture) : _.trimEnd(fixture, '\n');
+
+    expect(result).toEqual(expected);
+  });
 });
 
-test('2 yml files with stylish format', () => {
-  const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/stylishResult.txt`).toString(), '\n');
-  const result = genDiff(`${__dirname}/../__fixtures__/before.yml`, `${__dirname}/../__fixtures__/after.yml`, 'stylish');
+describe('errors', () => {
+  test('one or more files have unsupported extension', () => {
+    expect(() => {
+      genDiff(`${__dirname}/../__fixtures__/before.txt`, `${__dirname}/../__fixtures__/after.yml`);
+    }).toThrow();
+  });
 
-  expect(result).toBe(expected);
-});
-
-test('2 flat ini files with stylish format', () => {
-  const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/stylishResult.txt`).toString(), '\n');
-  const result = genDiff(`${__dirname}/../__fixtures__/before.ini`, `${__dirname}/../__fixtures__/after.ini`, 'stylish');
-
-  expect(result).toBe(expected);
-});
-
-test('json and yml with stylish format', () => {
-  const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/stylishResult.txt`).toString(), '\n');
-  const result = genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.yml`, 'stylish');
-
-  expect(result).toBe(expected);
-});
-
-test('2 json files with plain format', () => {
-  const expected = _.trimEnd(readFileSync(`${__dirname}/../__fixtures__/plainResult.txt`).toString(), '\n');
-  const result = genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.json`, 'plain');
-
-  expect(result).toBe(expected);
-});
-
-test('2 json files with json format', () => {
-  const expected = JSON.parse(readFileSync(`${__dirname}/../__fixtures__/jsonResult.json`).toString());
-  const result = JSON.parse(genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.json`, 'json'));
-
-  expect(result).toEqual(expected);
-});
-
-test('one or more files have unsupported extension', () => {
-  expect(() => {
-    genDiff(`${__dirname}/../__fixtures__/before.txt`, `${__dirname}/../__fixtures__/after.yml`);
-  }).toThrow();
-});
-
-test('unknown format name', () => {
-  expect(() => {
-    genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.json`, 'unknownFormatName');
-  }).toThrow();
+  test('unknown format name', () => {
+    expect(() => {
+      genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.json`, 'unknownFormatName');
+    }).toThrow();
+  });
 });
