@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import { isObject } from './utils.js';
 
 const getPropDiffStatus = (oldValue, value) => {
-  if (isObject(oldValue) && isObject(value)) {
+  if (_.isPlainObject(oldValue) && _.isPlainObject(value)) {
     return 'nested_changes';
   }
   if (value === undefined) {

@@ -1,7 +1,7 @@
-import { isObject } from '../utils.js';
+import _ from 'lodash';
 
 const getValueString = (value) => {
-  if (isObject(value)) {
+  if (_.isPlainObject(value)) {
     return '[complex value]';
   }
 
