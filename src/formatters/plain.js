@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { isObject } from '../utils.js';
 
 const getValueString = (value) => {
@@ -13,8 +12,9 @@ const getValueString = (value) => {
   return value.toString();
 };
 
-const plain = (diff, parentPath = '') => {
-  const diffString = diff.reduce((acc, propData) => {
+const plain = (diff, parentPath = '') => diff
+  .filter(({ status }) => status !== 'not_modified')
+  .map((propData) => {
     const {
       propName, status, value, oldValue, children,
     } = propData;
@@ -22,20 +22,16 @@ const plain = (diff, parentPath = '') => {
 
     switch (status) {
       case 'nested_changes':
-        return `${acc}\n${plain(children, propPath)}`;
+        return `${plain(children, propPath)}`;
       case 'deleted':
-        return `${acc}\nProperty '${propPath}' was deleted`;
+        return `Property '${propPath}' was deleted`;
       case 'added':
-        return `${acc}\nProperty '${propPath}' was added with value: ${getValueString(value)}`;
+        return `Property '${propPath}' was added with value: ${getValueString(value)}`;
       case 'changed':
-        return `${acc}\nProperty '${propPath}' was changed from ${getValueString(oldValue)} to ${getValueString(value)}`;
-      case 'not_modified':
+        return `Property '${propPath}' was changed from ${getValueString(oldValue)} to ${getValueString(value)}`;
       default:
-        return acc;
+        throw new Error('Unexpected prop status');
     }
-  }, '');
-
-  return _.trimStart(diffString);
-};
+  }).join('\n');
 
 export default plain;

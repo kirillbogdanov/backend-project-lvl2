@@ -19,27 +19,27 @@ const getValueString = (value, indentation) => {
 const stylish = (diff, levelOfNesting = 0) => {
   const INDENTATION_STRING = INDENT.repeat(levelOfNesting);
 
-  const diffString = diff.reduce((acc, propData) => {
+  const diffString = diff.map((propData) => {
     const {
       propName, status, value, oldValue, children,
     } = propData;
 
     switch (status) {
       case 'nested_changes':
-        return `${acc}${INDENTATION_STRING}    ${propName}: ${stylish(children, levelOfNesting + 1)}\n`;
+        return `${INDENTATION_STRING}    ${propName}: ${stylish(children, levelOfNesting + 1)}`;
       case 'deleted':
-        return `${acc}${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}\n`;
+        return `${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
       case 'added':
-        return `${acc}${INDENTATION_STRING}  + ${propName}: ${getValueString(value, INDENTATION_STRING)}\n`;
+        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(value, INDENTATION_STRING)}`;
       case 'changed':
-        return `${acc}${INDENTATION_STRING}  + ${propName}: ${getValueString(value, INDENTATION_STRING)}\n${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}\n`;
+        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(value, INDENTATION_STRING)}\n${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
       case 'not_modified':
       default:
-        return `${acc}${INDENTATION_STRING}    ${propName}: ${getValueString(value, INDENTATION_STRING)}\n`;
+        return `${INDENTATION_STRING}    ${propName}: ${getValueString(value, INDENTATION_STRING)}`;
     }
-  }, '');
+  }).join('\n');
 
-  return `{\n${diffString}${INDENTATION_STRING}}`;
+  return `{\n${diffString}\n${INDENTATION_STRING}}`;
 };
 
 export default stylish;
