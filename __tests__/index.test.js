@@ -3,25 +3,29 @@ import path from 'path';
 import _ from 'lodash';
 import genDiff from '../src/index.js';
 
-const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-const readFixtureFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
+const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
+const readFixtureFile = (fileName) => readFileSync(getFixturePath(fileName), 'utf-8');
+
+const stylishDescParams = ['stylish', [
+  ['json', 'stylishResult.txt'], ['yml', 'stylishResult.txt'], ['ini', 'stylishResult.txt'],
+]];
+const plainDescParams = ['plain', [
+  ['json', 'plainResult.txt'], ['yml', 'plainResult.txt'], ['ini', 'plainResult.txt'],
+]];
+const jsonDescParams = ['json', [
+  ['json', 'jsonResult.txt'], ['yml', 'jsonResult.txt'], ['ini', 'jsonResultForIni.txt'],
+]];
 
 describe.each([
-  ['stylish', 'stylishResult.txt'], ['plain', 'plainResult.txt'], ['json', 'jsonResult.json'],
-])('%s format', (format, resultFileName) => {
-  test.each(['json', 'yml', 'ini'])('%s', (fileFormat) => {
-    const diff = genDiff(getFixturePath(`before.${fileFormat}`), getFixturePath(`after.${fileFormat}`), format);
-    /*
-    Костыль с подменой имени файла фикстуры ниже пришлось сделать из-за того,
-    что при парсинге ini нельзя отличить значение-число от значения-строки.
-    Поэтому в jsonResultForIni.json лежит тот же результат, что и в jsonResult.json,
-    но с преобразованными к строке числовыми значениями.
-    */
-    const isFormatJson = format === 'json';
-    const resultFixtureFileName = isFormatJson && fileFormat === 'ini' ? 'jsonResultForIni.json' : resultFileName;
+  stylishDescParams, plainDescParams, jsonDescParams,
+])('%s format', (format, testParams) => {
+  test.each(testParams)('%s', (fileFormat, resultFixtureFileName) => {
     const fixture = readFixtureFile(resultFixtureFileName);
-    const result = isFormatJson ? JSON.parse(diff) : diff;
-    const expected = isFormatJson ? JSON.parse(fixture) : _.trimEnd(fixture, '\n');
+    const expected = _.trimEnd(fixture, '\n');
+
+    const beforeFileFixturePath = getFixturePath(`before.${fileFormat}`);
+    const afterFileFixturePath = getFixturePath(`after.${fileFormat}`);
+    const result = genDiff(beforeFileFixturePath, afterFileFixturePath, format);
 
     expect(result).toEqual(expected);
   });
@@ -29,14 +33,20 @@ describe.each([
 
 describe('errors', () => {
   test('one or more files have unsupported extension', () => {
+    const beforeFileFixturePath = getFixturePath('before.txt');
+    const afterFileFixturePath = getFixturePath('after.txt');
+
     expect(() => {
-      genDiff(`${__dirname}/../__fixtures__/before.txt`, `${__dirname}/../__fixtures__/after.yml`);
+      genDiff(beforeFileFixturePath, afterFileFixturePath);
     }).toThrow();
   });
 
   test('unknown format name', () => {
+    const beforeFileFixturePath = getFixturePath('before.json');
+    const afterFileFixturePath = getFixturePath('after.json');
+
     expect(() => {
-      genDiff(`${__dirname}/../__fixtures__/before.json`, `${__dirname}/../__fixtures__/after.json`, 'unknownFormatName');
+      genDiff(beforeFileFixturePath, afterFileFixturePath, 'unknownFormatName');
     }).toThrow();
   });
 });
