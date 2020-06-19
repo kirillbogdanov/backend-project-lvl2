@@ -9,7 +9,7 @@ const getValueString = (value) => {
     return `'${value}'`;
   }
 
-  return value.toString();
+  return value;
 };
 
 const plain = (diff, parentPath = '') => diff
