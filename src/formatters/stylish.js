@@ -21,7 +21,7 @@ const stylish = (diff, levelOfNesting = 0) => {
 
   const diffString = diff.map((propData) => {
     const {
-      propName, status, value, oldValue, children,
+      propName, status, newValue, oldValue, children,
     } = propData;
 
     switch (status) {
@@ -30,12 +30,12 @@ const stylish = (diff, levelOfNesting = 0) => {
       case 'deleted':
         return `${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
       case 'added':
-        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(value, INDENTATION_STRING)}`;
+        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(newValue, INDENTATION_STRING)}`;
       case 'changed':
-        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(value, INDENTATION_STRING)}\n${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
+        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(newValue, INDENTATION_STRING)}\n${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
       case 'not_modified':
       default:
-        return `${INDENTATION_STRING}    ${propName}: ${getValueString(value, INDENTATION_STRING)}`;
+        return `${INDENTATION_STRING}    ${propName}: ${getValueString(newValue, INDENTATION_STRING)}`;
     }
   }).join('\n');
 

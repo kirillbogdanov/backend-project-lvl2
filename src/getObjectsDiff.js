@@ -1,16 +1,16 @@
 import _ from 'lodash';
 
-const getPropDiffStatus = (oldValue, value) => {
-  if (_.isPlainObject(oldValue) && _.isPlainObject(value)) {
+const getPropDiffStatus = (oldValue, newValue) => {
+  if (_.isPlainObject(oldValue) && _.isPlainObject(newValue)) {
     return 'nested_changes';
   }
-  if (value === undefined) {
+  if (newValue === undefined) {
     return 'deleted';
   }
   if (oldValue === undefined) {
     return 'added';
   }
-  if (oldValue !== value) {
+  if (oldValue !== newValue) {
     return 'changed';
   }
   return 'not_modified';
@@ -23,15 +23,15 @@ const getObjectsDiff = (oldObject, newObject) => {
 
   return allKeys.map((propName) => {
     const oldValue = oldObject[propName];
-    const value = newObject[propName];
-    const status = getPropDiffStatus(oldValue, value);
+    const newValue = newObject[propName];
+    const status = getPropDiffStatus(oldValue, newValue);
 
     return {
       propName,
       status,
       oldValue: status !== 'nested_changes' && status !== 'not_modified' ? oldValue : undefined,
-      value: status !== 'nested_changes' ? value : undefined,
-      children: status === 'nested_changes' ? getObjectsDiff(oldValue, value) : undefined,
+      newValue: status !== 'nested_changes' ? newValue : undefined,
+      children: status === 'nested_changes' ? getObjectsDiff(oldValue, newValue) : undefined,
     };
   }).sort((propData1, propData2) => {
     if (propData1.propName < propData2.propName) {

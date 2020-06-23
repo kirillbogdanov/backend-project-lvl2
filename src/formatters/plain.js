@@ -16,7 +16,7 @@ const plain = (diff, parentPath = '') => diff
   .filter(({ status }) => status !== 'not_modified')
   .map((propData) => {
     const {
-      propName, status, value, oldValue, children,
+      propName, status, newValue, oldValue, children,
     } = propData;
     const propPath = parentPath ? `${parentPath}.${propName}` : `${propName}`;
 
@@ -26,9 +26,9 @@ const plain = (diff, parentPath = '') => diff
       case 'deleted':
         return `Property '${propPath}' was deleted`;
       case 'added':
-        return `Property '${propPath}' was added with value: ${getValueString(value)}`;
+        return `Property '${propPath}' was added with value: ${getValueString(newValue)}`;
       case 'changed':
-        return `Property '${propPath}' was changed from ${getValueString(oldValue)} to ${getValueString(value)}`;
+        return `Property '${propPath}' was changed from ${getValueString(oldValue)} to ${getValueString(newValue)}`;
       default:
         throw new Error('Unexpected prop status');
     }
