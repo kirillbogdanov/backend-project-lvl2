@@ -2,12 +2,12 @@ import _ from 'lodash';
 
 const INDENT = '    ';
 
-const getValueString = (value, indentation) => {
+const createValueString = (value, indentation) => {
   const INDENTATION_STRING = `${indentation}${INDENT}`;
 
   if (_.isPlainObject(value)) {
     const valueString = _.keys(value).reduce(
-      (acc, key) => `${acc}${INDENTATION_STRING}    ${key}: ${getValueString(value[key])}\n`, '',
+      (acc, key) => `${acc}${INDENTATION_STRING}    ${key}: ${createValueString(value[key])}\n`, '',
     );
 
     return `{\n${valueString}${INDENTATION_STRING}}`;
@@ -16,30 +16,38 @@ const getValueString = (value, indentation) => {
   return value.toString();
 };
 
-const stylish = (diff, levelOfNesting = 0) => {
-  const INDENTATION_STRING = INDENT.repeat(levelOfNesting);
+const stylish = (diff) => {
+  const iter = (innerDiff, levelOfNesting = 0) => {
+    const indentationString = INDENT.repeat(levelOfNesting);
 
-  const diffString = diff.map((propData) => {
-    const {
-      propName, status, newValue, oldValue, children,
-    } = propData;
+    const diffString = innerDiff.map((propData) => {
+      const {
+        propName, status, newValue, oldValue, children,
+      } = propData;
 
-    switch (status) {
-      case 'nested_changes':
-        return `${INDENTATION_STRING}    ${propName}: ${stylish(children, levelOfNesting + 1)}`;
-      case 'deleted':
-        return `${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
-      case 'added':
-        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(newValue, INDENTATION_STRING)}`;
-      case 'changed':
-        return `${INDENTATION_STRING}  + ${propName}: ${getValueString(newValue, INDENTATION_STRING)}\n${INDENTATION_STRING}  - ${propName}: ${getValueString(oldValue, INDENTATION_STRING)}`;
-      case 'not_modified':
-      default:
-        return `${INDENTATION_STRING}    ${propName}: ${getValueString(newValue, INDENTATION_STRING)}`;
-    }
-  }).join('\n');
+      switch (status) {
+        case 'nested_changes':
+          return `${indentationString}    ${propName}: ${iter(children, levelOfNesting + 1)}`;
+        case 'deleted':
+          return `${indentationString}  - ${propName}: ${createValueString(oldValue, indentationString)}`;
+        case 'added':
+          return `${indentationString}  + ${propName}: ${createValueString(newValue, indentationString)}`;
+        case 'changed': {
+          const newValueLine = `  + ${propName}: ${createValueString(newValue, indentationString)}`;
+          const oldValueLine = `  - ${propName}: ${createValueString(oldValue, indentationString)}`;
+          return `${indentationString}${newValueLine}\n${indentationString}${oldValueLine}`;
+        }
+        case 'not_modified':
+          return `${indentationString}    ${propName}: ${createValueString(newValue, indentationString)}`;
+        default:
+          throw new Error('Unexpected prop status');
+      }
+    }).join('\n');
 
-  return `{\n${diffString}\n${INDENTATION_STRING}}`;
+    return `{\n${diffString}\n${indentationString}}`;
+  };
+
+  return iter(diff);
 };
 
 export default stylish;

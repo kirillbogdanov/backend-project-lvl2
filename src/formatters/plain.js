@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const getValueString = (value) => {
+const createValueString = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]';
   }
@@ -12,26 +12,30 @@ const getValueString = (value) => {
   return value;
 };
 
-const plain = (diff, parentPath = '') => diff
-  .filter(({ status }) => status !== 'not_modified')
-  .map((propData) => {
-    const {
-      propName, status, newValue, oldValue, children,
-    } = propData;
-    const propPath = parentPath ? `${parentPath}.${propName}` : `${propName}`;
+const plain = (diff) => {
+  const iter = (innerDiff, parentPath = '') => innerDiff
+    .filter(({ status }) => status !== 'not_modified')
+    .map((propData) => {
+      const {
+        propName, status, newValue, oldValue, children,
+      } = propData;
+      const propPath = parentPath ? `${parentPath}.${propName}` : `${propName}`;
 
-    switch (status) {
-      case 'nested_changes':
-        return `${plain(children, propPath)}`;
-      case 'deleted':
-        return `Property '${propPath}' was deleted`;
-      case 'added':
-        return `Property '${propPath}' was added with value: ${getValueString(newValue)}`;
-      case 'changed':
-        return `Property '${propPath}' was changed from ${getValueString(oldValue)} to ${getValueString(newValue)}`;
-      default:
-        throw new Error('Unexpected prop status');
-    }
-  }).join('\n');
+      switch (status) {
+        case 'nested_changes':
+          return `${iter(children, propPath)}`;
+        case 'deleted':
+          return `Property '${propPath}' was deleted`;
+        case 'added':
+          return `Property '${propPath}' was added with value: ${createValueString(newValue)}`;
+        case 'changed':
+          return `Property '${propPath}' was changed from ${createValueString(oldValue)} to ${createValueString(newValue)}`;
+        default:
+          throw new Error('Unexpected prop status');
+      }
+    }).join('\n');
+
+  return iter(diff);
+};
 
 export default plain;
