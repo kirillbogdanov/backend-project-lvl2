@@ -17,8 +17,8 @@ const getPropDiffStatus = (oldValue, value) => {
 };
 
 const getObjectsDiff = (oldObject, newObject) => {
-  const object1Keys = Object.keys(oldObject);
-  const object2Keys = Object.keys(newObject);
+  const object1Keys = _.keys(oldObject);
+  const object2Keys = _.keys(newObject);
   const allKeys = _.union(object1Keys, object2Keys);
 
   return allKeys.map((propName) => {

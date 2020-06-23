@@ -6,7 +6,7 @@ const getValueString = (value, indentation) => {
   const INDENTATION_STRING = `${indentation}${INDENT}`;
 
   if (_.isPlainObject(value)) {
-    const valueString = Object.keys(value).reduce(
+    const valueString = _.keys(value).reduce(
       (acc, key) => `${acc}${INDENTATION_STRING}    ${key}: ${getValueString(value[key])}\n`, '',
     );
 
