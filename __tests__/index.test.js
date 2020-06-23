@@ -3,7 +3,9 @@ import path from 'path';
 import _ from 'lodash';
 import genDiff from '../src/index.js';
 
-const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = path.resolve();
+const getFixturePath = (fileName) => path.join(__dirname, '__fixtures__', fileName);
 const readFixtureFile = (fileName) => readFileSync(getFixturePath(fileName), 'utf-8');
 
 const stylishDescParams = ['stylish', [

@@ -6,7 +6,7 @@ lint:
 	npx eslint .
 
 test:
-	npx jest
+	npx -n --experimental-vm-modules jest
 
 .PHONY: coverage
 coverage:
