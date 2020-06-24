@@ -3,29 +3,30 @@ import path from 'path';
 import _ from 'lodash';
 import genDiff from '../src/index.js';
 
-const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = path.resolve();
+const getFixturePath = (fileName) => path.join(__dirname, '__fixtures__', fileName);
 const readFixtureFile = (fileName) => readFileSync(getFixturePath(fileName), 'utf-8');
 
-const stylishDescParams = ['stylish', [
-  ['json', 'stylishResult.txt'], ['yml', 'stylishResult.txt'], ['ini', 'stylishResult.txt'],
-]];
-const plainDescParams = ['plain', [
-  ['json', 'plainResult.txt'], ['yml', 'plainResult.txt'], ['ini', 'plainResult.txt'],
-]];
-const jsonDescParams = ['json', [
-  ['json', 'jsonResult.txt'], ['yml', 'jsonResult.txt'], ['ini', 'jsonResultForIni.txt'],
-]];
+const formattersNames = ['stylish', 'plain', 'json'];
+const extensions = ['json', 'yml', 'ini'];
+let resultFixtures;
 
-describe.each([
-  stylishDescParams, plainDescParams, jsonDescParams,
-])('%s format', (format, testParams) => {
-  test.each(testParams)('%s', (fileFormat, resultFixtureFileName) => {
-    const fixture = readFixtureFile(resultFixtureFileName);
+beforeAll(() => {
+  resultFixtures = formattersNames.reduce((acc, formatterName) => ({
+    ...acc,
+    [formatterName]: readFixtureFile(`${formatterName}Result.txt`),
+  }), resultFixtures);
+});
+
+describe.each(formattersNames)('%s format', (formatterName) => {
+  test.each(extensions)('%s', (extension) => {
+    const fixture = resultFixtures[formatterName];
     const expected = _.trimEnd(fixture, '\n');
 
-    const beforeFileFixturePath = getFixturePath(`before.${fileFormat}`);
-    const afterFileFixturePath = getFixturePath(`after.${fileFormat}`);
-    const result = genDiff(beforeFileFixturePath, afterFileFixturePath, format);
+    const beforeFileFixturePath = getFixturePath(`before.${extension}`);
+    const afterFileFixturePath = getFixturePath(`after.${extension}`);
+    const result = genDiff(beforeFileFixturePath, afterFileFixturePath, formatterName);
 
     expect(result).toEqual(expected);
   });
@@ -38,7 +39,7 @@ describe('errors', () => {
 
     expect(() => {
       genDiff(beforeFileFixturePath, afterFileFixturePath);
-    }).toThrow();
+    }).toThrow('Unsupported file extension: .txt');
   });
 
   test('unknown format name', () => {
@@ -47,6 +48,6 @@ describe('errors', () => {
 
     expect(() => {
       genDiff(beforeFileFixturePath, afterFileFixturePath, 'unknownFormatName');
-    }).toThrow();
+    }).toThrow('Unknown format name unknownFormatName');
   });
 });

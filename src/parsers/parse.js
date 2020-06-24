@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import ini from 'ini';
+import parseIni from './parseIni.js';
 
 const parse = (fileContent, fileExtension) => {
   switch (fileExtension) {
@@ -9,9 +9,9 @@ const parse = (fileContent, fileExtension) => {
     case '.yaml':
       return yaml.safeLoad(fileContent);
     case '.ini':
-      return ini.parse(fileContent);
+      return parseIni(fileContent);
     default:
-      throw new Error(`Parsing error: Unsupported file extension: ${fileExtension}`);
+      throw new Error(`Unsupported file extension: ${fileExtension}`);
   }
 };
 

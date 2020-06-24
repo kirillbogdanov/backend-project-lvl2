@@ -2,7 +2,7 @@ import stylish from './stylish.js';
 import plain from './plain.js';
 import json from './json.js';
 
-const getFormattedDiffString = (formatName, diff) => {
+const createFormattedDiffString = (formatName, diff) => {
   switch (formatName) {
     case 'stylish':
       return stylish(diff);
@@ -15,4 +15,4 @@ const getFormattedDiffString = (formatName, diff) => {
   }
 };
 
-export default getFormattedDiffString;
+export default createFormattedDiffString;

@@ -7,6 +7,9 @@
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,8 +24,6 @@
   },
   "homepage": "https://github.com/kirillbogdanov/backend-project-lvl2#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.10.2",
-    "babel-jest": "^26.0.1",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
