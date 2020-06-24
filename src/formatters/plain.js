@@ -14,7 +14,7 @@ const createValueString = (value) => {
 
 const plain = (diff) => {
   const iter = (innerDiff, parentPath = '') => innerDiff
-    .filter(({ status }) => status !== 'not_modified')
+    .filter(({ status }) => status !== 'static')
     .map((propData) => {
       const {
         propName, status, newValue, oldValue, children,
@@ -22,7 +22,7 @@ const plain = (diff) => {
       const propPath = parentPath ? `${parentPath}.${propName}` : `${propName}`;
 
       switch (status) {
-        case 'nested_changes':
+        case 'nested':
           return `${iter(children, propPath)}`;
         case 'deleted':
           return `Property '${propPath}' was deleted`;

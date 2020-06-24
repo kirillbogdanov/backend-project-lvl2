@@ -1,19 +1,26 @@
 import _ from 'lodash';
 
-const determinePropDiffStatus = (oldValue, newValue) => {
-  if (_.isPlainObject(oldValue) && _.isPlainObject(newValue)) {
-    return 'nested_changes';
-  }
-  if (newValue === undefined) {
+const determinePropDiffStatus = (oldObject, newObject, propName) => {
+  if (!_.has(newObject, propName)) {
     return 'deleted';
   }
-  if (oldValue === undefined) {
+
+  if (!_.has(oldObject, propName)) {
     return 'added';
   }
+
+  const oldValue = oldObject[propName];
+  const newValue = newObject[propName];
+
+  if (_.isPlainObject(oldValue) && _.isPlainObject(newValue)) {
+    return 'nested';
+  }
+
   if (oldValue !== newValue) {
     return 'changed';
   }
-  return 'not_modified';
+
+  return 'static';
 };
 
 const createObjectsDiff = (oldObject, newObject) => {
@@ -24,15 +31,21 @@ const createObjectsDiff = (oldObject, newObject) => {
   return allKeys.sort().map((propName) => {
     const oldValue = oldObject[propName];
     const newValue = newObject[propName];
-    const status = determinePropDiffStatus(oldValue, newValue);
+    const status = determinePropDiffStatus(oldObject, newObject, propName);
+    const propData = { propName, status };
 
-    return {
-      propName,
-      status,
-      oldValue: status !== 'nested_changes' && status !== 'not_modified' ? oldValue : undefined,
-      newValue: status !== 'nested_changes' ? newValue : undefined,
-      children: status === 'nested_changes' ? createObjectsDiff(oldValue, newValue) : undefined,
-    };
+    switch (status) {
+      case 'nested': {
+        const children = createObjectsDiff(oldValue, newValue);
+        return { ...propData, children };
+      }
+      case 'deleted':
+        return { ...propData, oldValue };
+      case 'changed':
+        return { ...propData, oldValue, newValue };
+      default:
+        return { ...propData, newValue };
+    }
   });
 };
 

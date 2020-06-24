@@ -26,7 +26,7 @@ const stylish = (diff) => {
       } = propData;
 
       switch (status) {
-        case 'nested_changes':
+        case 'nested':
           return `${indentationString}    ${propName}: ${iter(children, levelOfNesting + 1)}`;
         case 'deleted':
           return `${indentationString}  - ${propName}: ${createValueString(oldValue, indentationString)}`;
@@ -37,7 +37,7 @@ const stylish = (diff) => {
           const oldValueLine = `  - ${propName}: ${createValueString(oldValue, indentationString)}`;
           return `${indentationString}${newValueLine}\n${indentationString}${oldValueLine}`;
         }
-        case 'not_modified':
+        case 'static':
           return `${indentationString}    ${propName}: ${createValueString(newValue, indentationString)}`;
         default:
           throw new Error('Unexpected prop status');
