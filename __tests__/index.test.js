@@ -13,16 +13,19 @@ const extensions = ['json', 'yml', 'ini'];
 let resultFixtures;
 
 beforeAll(() => {
-  resultFixtures = formattersNames.reduce((acc, formatterName) => ({
-    ...acc,
-    [formatterName]: readFixtureFile(`${formatterName}Result.txt`),
-  }), resultFixtures);
+  resultFixtures = formattersNames.reduce((acc, formatterName) => {
+    const fixtureContent = readFixtureFile(`${formatterName}Result.txt`);
+
+    return {
+      ...acc,
+      [formatterName]: _.trimEnd(fixtureContent, '\n'),
+    };
+  }, resultFixtures);
 });
 
 describe.each(formattersNames)('%s format', (formatterName) => {
   test.each(extensions)('%s', (extension) => {
-    const fixture = resultFixtures[formatterName];
-    const expected = _.trimEnd(fixture, '\n');
+    const expected = resultFixtures[formatterName];
 
     const beforeFileFixturePath = getFixturePath(`before.${extension}`);
     const afterFileFixturePath = getFixturePath(`after.${extension}`);
