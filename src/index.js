@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 import path from 'path';
 import parse from './parsers/parse.js';
 import createObjectsDiff from './createObjectsDiff.js';
-import createFormattedDiffString from './formatters/index.js';
+import format from './formatters/index.js';
 
 const readFile = (filePath) => readFileSync(path.resolve(filePath)).toString();
 
@@ -14,7 +14,7 @@ const genDiff = (filePath1, filePath2, formatName) => {
 
   const objectsDiff = createObjectsDiff(object1, object2);
 
-  return createFormattedDiffString(formatName, objectsDiff);
+  return format(formatName, objectsDiff);
 };
 
 export default genDiff;
