@@ -40,7 +40,7 @@ const stylish = (diff) => {
         case 'static':
           return `${indentationString}    ${propName}: ${createValueString(newValue, indentationString)}`;
         default:
-          throw new Error('Unexpected prop status');
+          throw new Error(`Unexpected prop status: '${status}'`);
       }
     }).join('\n');
 

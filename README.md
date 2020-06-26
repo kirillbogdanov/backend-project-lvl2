@@ -1,7 +1,7 @@
 backend-project-lvl2
 =====================
 
-![CI](https://github.com/kirillbogdanov/backend-project-lvl2/workflows/CI/badge.svg)
+[![CI](https://github.com/kirillbogdanov/backend-project-lvl2/workflows/CI/badge.svg?branch=master&event=push)](https://github.com/kirillbogdanov/backend-project-lvl2/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/fca0e8017190ee29d60d/maintainability)](https://codeclimate.com/github/kirillbogdanov/backend-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/fca0e8017190ee29d60d/test_coverage)](https://codeclimate.com/github/kirillbogdanov/backend-project-lvl2/test_coverage)
 
