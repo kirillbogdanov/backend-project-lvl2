@@ -42,7 +42,7 @@ describe('errors', () => {
 
     expect(() => {
       genDiff(beforeFileFixturePath, afterFileFixturePath);
-    }).toThrow('Unsupported file extension: .txt');
+    }).toThrow('Unsupported data format: \'txt\'');
   });
 
   test('unknown format name', () => {
@@ -51,6 +51,6 @@ describe('errors', () => {
 
     expect(() => {
       genDiff(beforeFileFixturePath, afterFileFixturePath, 'unknownFormatName');
-    }).toThrow('Unknown format name unknownFormatName');
+    }).toThrow('Unknown format name: \'unknownFormatName\'');
   });
 });
