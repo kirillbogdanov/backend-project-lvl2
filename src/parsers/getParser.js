@@ -11,7 +11,7 @@ const getParser = (dataFormatName) => {
     case '.ini':
       return parseIni;
     default:
-      throw new Error(`Unsupported file extension: ${dataFormatName}`);
+      throw new Error(`Unsupported file extension: '${dataFormatName}'`);
   }
 };
 

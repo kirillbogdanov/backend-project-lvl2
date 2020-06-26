@@ -31,7 +31,7 @@ const plain = (diff) => {
         case 'changed':
           return `Property '${propPath}' was changed from ${createValueString(oldValue)} to ${createValueString(newValue)}`;
         default:
-          throw new Error('Unexpected prop status');
+          throw new Error(`Unexpected prop status: '${status}'`);
       }
     }).join('\n');
 
