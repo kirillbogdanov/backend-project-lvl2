@@ -1,24 +1,26 @@
 import ini from 'ini';
 import _ from 'lodash';
 
-const castStringToNum = (value) => {
-  const parsedValue = parseInt(value, 10);
+const normalizeValue = (value) => {
+  const numValue = parseInt(value, 10);
 
-  return Number.isNaN(parsedValue) ? value : parsedValue;
+  return Number.isNaN(numValue) ? value : numValue;
 };
 
-const castStringsToNum = (obj, iteratee) => _.mapValues(obj, (value) => {
-  if (_.isPlainObject(value)) {
-    return castStringsToNum(value, iteratee);
+const normalizeValues = (obj) => _.mapValues(obj, (value) => {
+  const normalizedValue = normalizeValue(value);
+
+  if (_.isPlainObject(normalizedValue)) {
+    return normalizeValues(normalizedValue);
   }
 
-  return iteratee(value);
+  return normalizedValue;
 });
 
 const parseIni = (fileContent) => {
   const parsedObj = ini.parse(fileContent);
 
-  return castStringsToNum(parsedObj, castStringToNum);
+  return normalizeValues(parsedObj);
 };
 
 export default parseIni;
