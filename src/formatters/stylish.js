@@ -6,11 +6,11 @@ const createValueString = (value, indentation) => {
   const INDENTATION_STRING = `${indentation}${INDENT}`;
 
   if (_.isPlainObject(value)) {
-    const valueString = _.keys(value).reduce(
-      (acc, key) => `${acc}${INDENTATION_STRING}    ${key}: ${createValueString(value[key])}\n`, '',
-    );
+    const valueString = _.keys(value).map(
+      (key) => `${INDENTATION_STRING}    ${key}: ${createValueString(value[key])}`,
+    ).join('\n');
 
-    return `{\n${valueString}${INDENTATION_STRING}}`;
+    return `{\n${valueString}\n${INDENTATION_STRING}}`;
   }
 
   return value.toString();
