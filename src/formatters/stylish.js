@@ -6,11 +6,11 @@ const createValueString = (value, indentation) => {
   const INDENTATION_STRING = `${indentation}${INDENT}`;
 
   if (_.isPlainObject(value)) {
-    const valueString = _.keys(value).reduce(
-      (acc, key) => `${acc}${INDENTATION_STRING}    ${key}: ${createValueString(value[key])}\n`, '',
-    );
+    const valueString = _.keys(value).map(
+      (key) => `${INDENTATION_STRING}    ${key}: ${createValueString(value[key])}`,
+    ).join('\n');
 
-    return `{\n${valueString}${INDENTATION_STRING}}`;
+    return `{\n${valueString}\n${INDENTATION_STRING}}`;
   }
 
   return value.toString();
@@ -22,10 +22,10 @@ const stylish = (diff) => {
 
     const diffString = innerDiff.map((propData) => {
       const {
-        propName, status, newValue, oldValue, children,
+        propName, nodeType, newValue, oldValue, children,
       } = propData;
 
-      switch (status) {
+      switch (nodeType) {
         case 'nested':
           return `${indentationString}    ${propName}: ${iter(children, levelOfNesting + 1)}`;
         case 'deleted':
@@ -37,10 +37,10 @@ const stylish = (diff) => {
           const oldValueLine = `  - ${propName}: ${createValueString(oldValue, indentationString)}`;
           return `${indentationString}${newValueLine}\n${indentationString}${oldValueLine}`;
         }
-        case 'static':
+        case 'unchanged':
           return `${indentationString}    ${propName}: ${createValueString(newValue, indentationString)}`;
         default:
-          throw new Error(`Unexpected prop status: '${status}'`);
+          throw new Error(`Unexpected nodeType: '${nodeType}'`);
       }
     }).join('\n');
 

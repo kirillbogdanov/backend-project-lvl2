@@ -15,4 +15,10 @@ const getFormatter = (formatName) => {
   }
 };
 
-export default getFormatter;
+const format = (diff, formatName) => {
+  const formatter = getFormatter(formatName);
+
+  return formatter(diff);
+};
+
+export default format;
