@@ -15,4 +15,10 @@ const getParser = (dataFormatName) => {
   }
 };
 
-export default getParser;
+const parse = (fileContent, dataFormatName) => {
+  const parser = getParser(dataFormatName);
+
+  return parser(fileContent);
+};
+
+export default parse;

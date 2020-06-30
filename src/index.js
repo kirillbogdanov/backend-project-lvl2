@@ -1,24 +1,23 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import _ from 'lodash';
-import getParser from './parsers/getParser.js';
+import parse from './parsers/parse.js';
 import createObjectsDiff from './createObjectsDiff.js';
-import getFormatter from './formatters/getFormatter.js';
+import format from './formatters/format.js';
 
 const readFile = (filePath) => readFileSync(path.resolve(filePath), 'utf-8');
 const getFileDataFormat = (filePath) => _.trimStart(path.extname(filePath), '.');
 
 const genDiff = (filePath1, filePath2, formatName) => {
-  const dataFormatName = getFileDataFormat(filePath1);
-  const parser = getParser(dataFormatName);
+  const dataFormatName1 = getFileDataFormat(filePath1);
+  const dataFormatName2 = getFileDataFormat(filePath2);
   const fileContent1 = readFile(filePath1);
   const fileContent2 = readFile(filePath2);
-  const object1 = parser(fileContent1);
-  const object2 = parser(fileContent2);
+  const object1 = parse(fileContent1, dataFormatName1);
+  const object2 = parse(fileContent2, dataFormatName2);
   const objectsDiff = createObjectsDiff(object1, object2);
-  const formatter = getFormatter(formatName);
 
-  return formatter(objectsDiff);
+  return format(objectsDiff, formatName);
 };
 
 export default genDiff;
