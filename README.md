@@ -24,7 +24,7 @@ $ gendiff ../before.json ../after.json
 ```
 As dependency:
 ```js
-import genDiff from '../backend-project-lvl2/src/index.js';
+import genDiff from '../backend-project-lvl2';
 
 const diff = genDiff(filePath1, filePath2);
 console.log(diff);

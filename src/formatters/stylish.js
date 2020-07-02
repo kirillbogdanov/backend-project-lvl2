@@ -22,10 +22,10 @@ const stylish = (diff) => {
 
     const diffString = innerDiff.map((propData) => {
       const {
-        propName, nodeType, newValue, oldValue, children,
+        propName, type, newValue, oldValue, children,
       } = propData;
 
-      switch (nodeType) {
+      switch (type) {
         case 'nested':
           return `${indentationString}    ${propName}: ${iter(children, levelOfNesting + 1)}`;
         case 'deleted':
@@ -40,7 +40,7 @@ const stylish = (diff) => {
         case 'unchanged':
           return `${indentationString}    ${propName}: ${createValueString(newValue, indentationString)}`;
         default:
-          throw new Error(`Unexpected nodeType: '${nodeType}'`);
+          throw new Error(`Unexpected node type: '${type}'`);
       }
     }).join('\n');
 

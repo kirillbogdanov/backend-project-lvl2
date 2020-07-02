@@ -6,11 +6,10 @@ lint:
 	npx eslint .
 
 test:
-	npx -n --experimental-vm-modules -n --no-warnings jest
+	npm run test
 
-.PHONY: coverage
-coverage:
-	npx -n --experimental-vm-modules -n --no-warnings jest --coverage
+text-coverage:
+	npm run test -- --coverage
 
 check:
 	make lint

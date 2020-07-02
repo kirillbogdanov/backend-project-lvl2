@@ -14,14 +14,14 @@ const createValueString = (value) => {
 
 const plain = (diff) => {
   const iter = (innerDiff, parentPath = '') => innerDiff
-    .filter(({ nodeType }) => nodeType !== 'unchanged')
+    .filter(({ type }) => type !== 'unchanged')
     .map((propData) => {
       const {
-        propName, nodeType, newValue, oldValue, children,
+        propName, type, newValue, oldValue, children,
       } = propData;
       const propPath = parentPath ? `${parentPath}.${propName}` : `${propName}`;
 
-      switch (nodeType) {
+      switch (type) {
         case 'nested':
           return `${iter(children, propPath)}`;
         case 'deleted':
@@ -31,7 +31,7 @@ const plain = (diff) => {
         case 'changed':
           return `Property '${propPath}' was changed from ${createValueString(oldValue)} to ${createValueString(newValue)}`;
         default:
-          throw new Error(`Unexpected nodeType: '${nodeType}'`);
+          throw new Error(`Unexpected node type: '${type}'`);
       }
     }).join('\n');
 

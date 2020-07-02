@@ -1,8 +1,8 @@
 {
-  "name": "backend-project-lvl2",
+  "name": "@kirillbogdanov/backend-project-lvl2",
   "version": "0.0.1",
   "description": "CLI that compares two configuration files and shows a difference.",
-  "main": "src/index.js",
+  "main": "index.js",
   "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
@@ -11,7 +11,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "test": "npx -n --experimental-vm-modules jest"
+    "test": "npx -n --experimental-vm-modules -n --no-warnings jest"
   },
   "repository": {
     "type": "git",

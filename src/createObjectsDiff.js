@@ -10,25 +10,25 @@ const createObjectsDiff = (oldObject, newObject) => {
     const newValue = newObject[propName];
 
     if (!_.has(newObject, propName)) {
-      return { propName, nodeType: 'deleted', oldValue };
+      return { propName, type: 'deleted', oldValue };
     }
 
     if (!_.has(oldObject, propName)) {
-      return { propName, nodeType: 'added', newValue };
+      return { propName, type: 'added', newValue };
     }
 
     if (_.isPlainObject(oldValue) && _.isPlainObject(newValue)) {
       const children = createObjectsDiff(oldValue, newValue);
-      return { propName, nodeType: 'nested', children };
+      return { propName, type: 'nested', children };
     }
 
     if (oldValue !== newValue) {
       return {
-        propName, nodeType: 'changed', oldValue, newValue,
+        propName, type: 'changed', oldValue, newValue,
       };
     }
 
-    return { propName, nodeType: 'unchanged', newValue };
+    return { propName, type: 'unchanged', newValue };
   });
 };
 

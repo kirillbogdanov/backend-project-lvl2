@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import _ from 'lodash';
-import genDiff from '../src/index.js';
+import genDiff from '../src/genDiff.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = path.resolve();

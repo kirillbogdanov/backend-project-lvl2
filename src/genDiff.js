@@ -1,9 +1,9 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import _ from 'lodash';
-import parse from './parsers/parse.js';
+import parse from './parsers';
 import createObjectsDiff from './createObjectsDiff.js';
-import format from './formatters/format.js';
+import format from './formatters';
 
 const readFile = (filePath) => readFileSync(path.resolve(filePath), 'utf-8');
 const getFileDataFormat = (filePath) => _.trimStart(path.extname(filePath), '.');
