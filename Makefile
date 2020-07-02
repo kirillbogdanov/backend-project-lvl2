@@ -1,6 +1,12 @@
-install:
+install-deps:
 	npm ci
+
+link:
 	npm link
+
+install:
+	make install-deps
+	make link
 
 lint:
 	npx eslint .
