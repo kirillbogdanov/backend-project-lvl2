@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 14.3
       - name: Install dependencies
-        run: npm ci
+        run: make install-deps
       - name: Run linter
         run: make lint
       - name: Capture test coverage and send to CodeClimate
