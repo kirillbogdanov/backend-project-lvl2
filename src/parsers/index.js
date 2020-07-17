@@ -11,14 +11,14 @@ const getParser = (dataFormatName) => {
     case 'ini':
       return parseIni;
     default:
-      throw new Error(`Unsupported data format: '${dataFormatName}'`);
+      throw new Error(`Unsupported data format: "${dataFormatName}"`);
   }
 };
 
-const parse = (fileContent, dataFormatName) => {
+const parse = (data, dataFormatName) => {
   const parser = getParser(dataFormatName);
 
-  return parser(fileContent);
+  return parser(data);
 };
 
 export default parse;

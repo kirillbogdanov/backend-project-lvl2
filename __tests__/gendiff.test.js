@@ -1,11 +1,13 @@
+/* eslint-disable no-underscore-dangle */
 import { readFileSync } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import _ from 'lodash';
-import genDiff from '../src/genDiff.js';
+import genDiff from '../index.js';
 
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = path.resolve();
-const getFixturePath = (fileName) => path.join(__dirname, '__fixtures__', fileName);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const getFixturePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 const readFixtureFile = (fileName) => readFileSync(getFixturePath(fileName), 'utf-8');
 
 const formattersNames = ['stylish', 'plain', 'json'];
@@ -42,7 +44,7 @@ describe('errors', () => {
 
     expect(() => {
       genDiff(beforeFileFixturePath, afterFileFixturePath);
-    }).toThrow('Unsupported data format: \'txt\'');
+    }).toThrow('Unsupported data format: "txt"');
   });
 
   test('unknown format name', () => {
@@ -51,6 +53,18 @@ describe('errors', () => {
 
     expect(() => {
       genDiff(beforeFileFixturePath, afterFileFixturePath, 'unknownFormatName');
-    }).toThrow('Unknown format name: \'unknownFormatName\'');
+    }).toThrow('Unknown format name: "unknownFormatName"');
+  });
+});
+
+describe('genDiff args default values', () => {
+  test('default formatter is stylish', () => {
+    const beforeFileFixturePath = getFixturePath('before.json');
+    const afterFileFixturePath = getFixturePath('after.json');
+
+    const result = genDiff(beforeFileFixturePath, afterFileFixturePath);
+    const expected = resultFixtures.stylish;
+
+    expect(result).toEqual(expected);
   });
 });

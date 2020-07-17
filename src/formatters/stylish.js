@@ -2,18 +2,17 @@ import _ from 'lodash';
 
 const INDENT = '    ';
 
-const createValueString = (value, indentation) => {
-  const INDENTATION_STRING = `${indentation}${INDENT}`;
-
-  if (_.isPlainObject(value)) {
-    const valueString = _.keys(value).map(
-      (key) => `${INDENTATION_STRING}    ${key}: ${createValueString(value[key])}`,
-    ).join('\n');
-
-    return `{\n${valueString}\n${INDENTATION_STRING}}`;
+const stringify = (value, indentation) => {
+  if (!_.isPlainObject(value)) {
+    return value.toString();
   }
 
-  return value.toString();
+  const INDENTATION_STRING = `${indentation}${INDENT}`;
+  const valueString = _.keys(value).map(
+    (key) => `${INDENTATION_STRING}    ${key}: ${stringify(value[key])}`,
+  ).join('\n');
+
+  return `{\n${valueString}\n${INDENTATION_STRING}}`;
 };
 
 const stylish = (diff) => {
@@ -29,16 +28,16 @@ const stylish = (diff) => {
         case 'nested':
           return `${indentationString}    ${propName}: ${iter(children, levelOfNesting + 1)}`;
         case 'deleted':
-          return `${indentationString}  - ${propName}: ${createValueString(oldValue, indentationString)}`;
+          return `${indentationString}  - ${propName}: ${stringify(oldValue, indentationString)}`;
         case 'added':
-          return `${indentationString}  + ${propName}: ${createValueString(newValue, indentationString)}`;
+          return `${indentationString}  + ${propName}: ${stringify(newValue, indentationString)}`;
         case 'changed': {
-          const newValueLine = `  + ${propName}: ${createValueString(newValue, indentationString)}`;
-          const oldValueLine = `  - ${propName}: ${createValueString(oldValue, indentationString)}`;
+          const newValueLine = `  + ${propName}: ${stringify(newValue, indentationString)}`;
+          const oldValueLine = `  - ${propName}: ${stringify(oldValue, indentationString)}`;
           return `${indentationString}${newValueLine}\n${indentationString}${oldValueLine}`;
         }
         case 'unchanged':
-          return `${indentationString}    ${propName}: ${createValueString(newValue, indentationString)}`;
+          return `${indentationString}    ${propName}: ${stringify(newValue, indentationString)}`;
         default:
           throw new Error(`Unexpected node type: '${type}'`);
       }

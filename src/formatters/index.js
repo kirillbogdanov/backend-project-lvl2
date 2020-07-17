@@ -11,14 +11,10 @@ const getFormatter = (formatName) => {
     case 'json':
       return json;
     default:
-      throw new Error(`Unknown format name: '${formatName}'`);
+      throw new Error(`Unknown format name: "${formatName}"`);
   }
 };
 
-const format = (diff, formatName) => {
-  const formatter = getFormatter(formatName);
-
-  return formatter(diff);
-};
+const format = (diff, formatName) => getFormatter(formatName)(diff);
 
 export default format;
