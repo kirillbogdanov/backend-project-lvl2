@@ -14,7 +14,7 @@ lint:
 test:
 	npm run test
 
-text-coverage:
+test-coverage:
 	npm run test -- --coverage
 
 check:
